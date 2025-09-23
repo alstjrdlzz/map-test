@@ -1,45 +1,52 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>Google Street View</title>
-    <style>
-      html, body {
-        margin: 0;
-        height: 100%;
-      }
-      iframe {
-        width: 100%;
-        height: 100%;
-        border: none;
-      }
-    </style>
-  </head>
-  <body>
-    <iframe
-      id="streetview"
-      allowfullscreen
-      loading="lazy"
-      referrerpolicy="no-referrer-when-downgrade">
-    </iframe>
+<head>
+  <meta charset="utf-8">
+  <title>Naver Map Panorama Example</title>
+  <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=9sk408gt96&submodules=panorama"></script>
+  <style>
+    body {margin:0; padding:0;}
+    #map {width:50%; height:100vh; float:left;}
+    #pano {width:50%; height:100vh; float:left;}
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <div id="pano"></div>
 
-    <script>
-      // URL 파라미터 읽기
+  <script>
+    // 쿼리스트링 파라미터 읽기
+    function getQueryParam(name) {
       const urlParams = new URLSearchParams(window.location.search);
-      const lat = urlParams.get("lat") || "37.554678";   // 기본 위도
-      const lon = urlParams.get("lon") || "126.970606";  // 기본 경도
+      return urlParams.get(name);
+    }
 
-      // 구글 API Key
-      const apiKey = "AIzaSyArORbYR0-yjvrWTD9wtu6SBP1irKrJqgM";
+    var lat = parseFloat(getQueryParam("lat")) || 37.5665;  // 기본값 서울시청
+    var lng = parseFloat(getQueryParam("lng")) || 126.9780;
 
-      // iframe src 만들기
-      const iframeUrl =
-        "https://www.google.com/maps/embed/v1/streetview"
-        + "?key=" + apiKey
-        + "&location=" + lat + "," + lon
-        + "&heading=210&pitch=10&fov=80";
+    var latlng = new naver.maps.LatLng(lat, lng);
 
-      document.getElementById("streetview").src = iframeUrl;
-    </script>
-  </body>
+    // 지도
+    var map = new naver.maps.Map('map', {
+      center: latlng,
+      zoom: 14
+    });
+
+    // 파노라마
+    var pano = new naver.maps.Panorama("pano", {
+      position: latlng,
+      pov: {
+        pan: -135,
+        tilt: 29,
+        fov: 100
+      }
+    });
+
+    // 마커
+    var marker = new naver.maps.Marker({
+      position: latlng,
+      map: map
+    });
+  </script>
+</body>
 </html>
