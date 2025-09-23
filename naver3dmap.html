@@ -1,38 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <title>Naver 3D Map Viewer</title>
-  <style>
-    #map {
-      width: 100%;
-      height: 100vh;
-    }
-  </style>
-  <script type="text/javascript" 
-          src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=9sk408gt96"></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <title>간단한 지도 표시하기</title>
+    <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=9sk408gt96"></script>
 </head>
 <body>
-  <div id="map"></div>
-  <script>
-    // URL 파라미터 읽기
-    const urlParams = new URLSearchParams(window.location.search);
-    const lat = parseFloat(urlParams.get("lat")) || 37.5665;   // 기본값: 서울
-    const lng = parseFloat(urlParams.get("lng")) || 126.9780;
+<div id="map" style="width:100%;height:400px;"></div>
 
-    // 지도 생성
-    var map = new naver.maps.Map("map", {
-      center: new naver.maps.LatLng(lat, lng),
-      zoom: 17,
-      mapTypeId: naver.maps.MapTypeId.HYBRID,
-      tilt: 45
-    });
+<script>
+var mapOptions = {
+    center: new naver.maps.LatLng(37.3595704, 127.105399),
+    zoom: 10
+};
 
-    // 마커 추가
-    new naver.maps.Marker({
-      position: new naver.maps.LatLng(lat, lng),
-      map: map
-    });
-  </script>
+var map = new naver.maps.Map('map', mapOptions);
+</script>
 </body>
 </html>
+
