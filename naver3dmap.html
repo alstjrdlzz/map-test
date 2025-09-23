@@ -1,23 +1,63 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
-    <title>간단한 지도 표시하기</title>
-    <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=9sk408gt96"></script>
+  <meta charset="utf-8">
+  <title>Naver Map Panorama Example</title>
+  <!-- Naver Maps JS API -->
+  <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=9sk408gt96&submodules=panorama"></script>
+  <style>
+    body {margin:0; padding:0;}
+    #map {width:50%; height:100vh; float:left;}
+    #pano {width:50%; height:100vh; float:left;}
+    #formBox {
+      position:absolute; top:10px; left:10px; z-index:1000; background:white; padding:10px;
+      border-radius:6px; box-shadow:0 2px 5px rgba(0,0,0,0.3);
+    }
+    input {margin:3px;}
+  </style>
 </head>
 <body>
-<div id="map" style="width:100%;height:400px;"></div>
+  <div id="formBox">
+    <label>위도: <input type="text" id="lat" value="37.5665"></label><br>
+    <label>경도: <input type="text" id="lng" value="126.9780"></label><br>
+    <button onclick="showPanorama()">보기</button>
+  </div>
+  <div id="map"></div>
+  <div id="pano"></div>
 
-<script>
-var mapOptions = {
-    center: new naver.maps.LatLng(37.3595704, 127.105399),
-    zoom: 10
-};
+  <script>
+    // 기본 지도 객체
+    var map = new naver.maps.Map('map', {
+      center: new naver.maps.LatLng(37.5665, 126.9780),
+      zoom: 14
+    });
 
-var map = new naver.maps.Map('map', mapOptions);
-</script>
+    // 파노라마 객체
+    var pano = new naver.maps.Panorama("pano", {
+      position: new naver.maps.LatLng(37.5665, 126.9780),
+      pov: {
+        pan: -135,
+        tilt: 29,
+        fov: 100
+      }
+    });
+
+    // 마커 추가
+    var marker = new naver.maps.Marker({
+      position: new naver.maps.LatLng(37.5665, 126.9780),
+      map: map
+    });
+
+    function showPanorama() {
+      var lat = parseFloat(document.getElementById("lat").value);
+      var lng = parseFloat(document.getElementById("lng").value);
+      var latlng = new naver.maps.LatLng(lat, lng);
+
+      map.setCenter(latlng);
+      marker.setPosition(latlng);
+
+      pano.setPosition(latlng);
+    }
+  </script>
 </body>
 </html>
-
