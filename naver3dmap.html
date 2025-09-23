@@ -3,38 +3,38 @@
 <head>
   <meta charset="utf-8">
   <title>Naver Map Panorama Example</title>
-  <!-- Naver Maps JS API -->
   <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=9sk408gt96&submodules=panorama"></script>
   <style>
     body {margin:0; padding:0;}
     #map {width:50%; height:100vh; float:left;}
     #pano {width:50%; height:100vh; float:left;}
-    #formBox {
-      position:absolute; top:10px; left:10px; z-index:1000; background:white; padding:10px;
-      border-radius:6px; box-shadow:0 2px 5px rgba(0,0,0,0.3);
-    }
-    input {margin:3px;}
   </style>
 </head>
 <body>
-  <div id="formBox">
-    <label>위도: <input type="text" id="lat" value="37.5665"></label><br>
-    <label>경도: <input type="text" id="lng" value="126.9780"></label><br>
-    <button onclick="showPanorama()">보기</button>
-  </div>
   <div id="map"></div>
   <div id="pano"></div>
 
   <script>
-    // 기본 지도 객체
+    // 쿼리스트링 파라미터 읽기
+    function getQueryParam(name) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(name);
+    }
+
+    var lat = parseFloat(getQueryParam("lat")) || 37.5665;  // 기본값 서울시청
+    var lng = parseFloat(getQueryParam("lng")) || 126.9780;
+
+    var latlng = new naver.maps.LatLng(lat, lng);
+
+    // 지도
     var map = new naver.maps.Map('map', {
-      center: new naver.maps.LatLng(37.5665, 126.9780),
+      center: latlng,
       zoom: 14
     });
 
-    // 파노라마 객체
+    // 파노라마
     var pano = new naver.maps.Panorama("pano", {
-      position: new naver.maps.LatLng(37.5665, 126.9780),
+      position: latlng,
       pov: {
         pan: -135,
         tilt: 29,
@@ -42,22 +42,11 @@
       }
     });
 
-    // 마커 추가
+    // 마커
     var marker = new naver.maps.Marker({
-      position: new naver.maps.LatLng(37.5665, 126.9780),
+      position: latlng,
       map: map
     });
-
-    function showPanorama() {
-      var lat = parseFloat(document.getElementById("lat").value);
-      var lng = parseFloat(document.getElementById("lng").value);
-      var latlng = new naver.maps.LatLng(lat, lng);
-
-      map.setCenter(latlng);
-      marker.setPosition(latlng);
-
-      pano.setPosition(latlng);
-    }
   </script>
 </body>
 </html>
