@@ -52,6 +52,12 @@
       },
       flightSpot: false,
     });
+      
+    // 입력 좌표 마커
+    var marker = new naver.maps.Marker({
+      position: latlng,
+      map: map
+    });
 
     // 파노라마 초기화 후 FlightSpot 강제 제거
     naver.maps.Event.addListener(pano, "init", function() {
@@ -61,11 +67,7 @@
           spot.setVisible(false); // 아이콘 숨김
           spot.setMap(null);      // 아예 제거
         });
-
-    // 입력 좌표 마커
-    var marker = new naver.maps.Marker({
-      position: latlng,
-      map: map
+      }
     });
   </script>
 </body>
