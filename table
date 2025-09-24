@@ -1,0 +1,10 @@
+<table>
+    <tr>
+        <th scope="row">연면적</th>
+        <td>1234</td> 
+    </tr>
+    <tr>
+        <th scope="row">임대료</th>
+        <td>A타입(1000/30), B타입(1000/25)</td> 
+    </tr>
+</table>
