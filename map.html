@@ -2,76 +2,36 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Naver Map Panorama Debug</title>
-  <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=9sk408gt96&submodules=panorama"></script>
+  <title>Naver Map Panorama</title>
   <style>
-    body {margin:0; padding:0; font-family:Arial, sans-serif;}
-    #info {position:fixed; top:0; left:0; width:100%; background:#fff; z-index:1000; padding:8px; font-size:14px; border-bottom:1px solid #ccc;}
-    #map {width:50%; height:calc(100vh - 50px); float:left;}
-    #pano {width:50%; height:calc(100vh - 50px); float:left;}
+    #map {
+      width: 100%;
+      height: 100vh;
+    }
   </style>
+  <script type="text/javascript" 
+          src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=wvypezmyme"></script>
 </head>
 <body>
-  <div id="info">좌표 정보 로딩 중...</div>
   <div id="map"></div>
-  <div id="pano"></div>
-
   <script>
-    // 쿼리스트링에서 위도경도 가져오기
-    function getQueryParam(name) {
-      const urlParams = new URLSearchParams(window.location.search);
-      return urlParams.get(name);
-    }
+    // URL 파라미터 읽기
+    const urlParams = new URLSearchParams(window.location.search);
+    const lat = parseFloat(urlParams.get("lat")) || 37.5665;   // 기본값: 서울
+    const lon = parseFloat(urlParams.get("lon")) || 126.9780;
 
-    var lat = parseFloat(getQueryParam("lat")) || 37.5665;
-    var lon = parseFloat(getQueryParam("lon")) || 126.9780;
-    var inputLatLng = new naver.maps.LatLng(lat, lon);
-
-    // 지도
-    var map = new naver.maps.Map('map', {
-      center: inputLatLng,
-      zoom: 16
+    // 지도 생성
+    var map = new naver.maps.Map("map", {
+      center: new naver.maps.LatLng(lat, lon),
+      zoom: 18,
+      mapTypeId: naver.maps.MapTypeId.HYBRID,
+      tilt: 45
     });
 
-    // 마커 - 입력 좌표
+    // 마커 추가
     new naver.maps.Marker({
-      position: inputLatLng,
-      map: map,
-      title: "입력 좌표",
-      icon: {
-        content: '<div style="background:red;width:12px;height:12px;border-radius:50%;"></div>',
-        anchor: new naver.maps.Point(6,6)
-      }
-    });
-
-    // 파노라마
-    var pano = new naver.maps.Panorama("pano", {
-      position: inputLatLng,
-      pov: { pan: -135, tilt: 29, fov: 100 }
-    });
-
-    // 파노라마 좌표 확인
-    naver.maps.Event.addListener(pano, 'init', function() {
-      var panoPos = pano.getPosition();
-
-      // 마커 - 실제 파노라마 좌표
-      new naver.maps.Marker({
-        position: panoPos,
-        map: map,
-        title: "파노라마 좌표",
-        icon: {
-          content: '<div style="background:blue;width:12px;height:12px;border-radius:50%;"></div>',
-          anchor: new naver.maps.Point(6,6)
-        }
-      });
-
-      // 화면 출력
-      var info = `
-        입력 좌표: ${inputLatLng.toString()} <br>
-        파노라마 좌표: ${panoPos.toString()} <br>
-        ${inputLatLng.equals(panoPos) ? "✅ 동일 (fallback 없음)" : "⚠️ 다름 (fallback 발생)"}
-      `;
-      document.getElementById("info").innerHTML = info;
+      position: new naver.maps.LatLng(lat, lon),
+      map: map
     });
   </script>
 </body>
