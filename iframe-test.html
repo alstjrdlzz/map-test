@@ -39,7 +39,7 @@
     // 지도
     var map = new naver.maps.Map('map', {
       center: latlng,
-      zoom: 18  // 건물 단위 확대
+      zoom: 19  // 건물 단위 확대
     });
 
     // 파노라마
@@ -52,6 +52,15 @@
       },
       flightSpot: false,
     });
+
+    // 파노라마 초기화 후 FlightSpot 강제 제거
+    naver.maps.Event.addListener(pano, "init", function() {
+      var spots = pano.getFlightSpots();
+      if (spots && spots.length > 0) {
+        spots.forEach(function(spot) {
+          spot.setVisible(false); // 아이콘 숨김
+          spot.setMap(null);      // 아예 제거
+        });
 
     // 입력 좌표 마커
     var marker = new naver.maps.Marker({
