@@ -18,6 +18,10 @@
       float: left;
       pointer-events: auto !important; /* Tableau iframe 안에서 마우스 이벤트 허용 */
     }
+    /* 파노라마 이동 아이콘(비행기 모양) 숨김 */
+    .naver-map-flightspot {
+      display: none !important;
+    }
   </style>
 </head>
 <body>
@@ -57,16 +61,6 @@
     var marker = new naver.maps.Marker({
       position: latlng,
       map: map
-    });
-
-    // 파노라마 초기화 후 FlightSpot 강제 제거
-    naver.maps.Event.addListener(pano, "init", function() {
-      var spots = pano.getFlightSpots();
-      if (spots && spots.length > 0) {
-        spots.forEach(function(spot) {
-          spot.setVisible(false); // 아이콘 숨김
-        });
-      }
     });
   </script>
 </body>
