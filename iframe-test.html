@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Naver Map Panorama</title>
+  <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=9sk408gt96&submodules=panorama"></script>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+    #map, #pano {
+      width: 50%;
+      height: 100vh;
+      float: left;
+      pointer-events: auto !important; /* Tableau iframe 안에서 마우스 이벤트 허용 */
+    }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <div id="pano"></div>
+
+  <script>
+    // 쿼리스트링 파라미터 읽기
+    function getQueryParam(name) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(name);
+    }
+
+    var lat = parseFloat(getQueryParam("lat")) || 37.5665;  // 기본값: 서울시청
+    var lng = parseFloat(getQueryParam("lng")) || 126.9780;
+
+    var latlng = new naver.maps.LatLng(lat, lng);
+
+    // 지도
+    var map = new naver.maps.Map('map', {
+      center: latlng,
+      zoom: 18  // 건물 단위 확대
+    });
+
+    // 파노라마
+    var pano = new naver.maps.Panorama("pano", {
+      position: latlng,
+      pov: {
+        pan: -135,
+        tilt: 29,
+        fov: 70   // 시야 좁혀서 확대 효과
+      },
+      flightSpot: true,
+    });
+
+    // 입력 좌표 마커
+    var marker = new naver.maps.Marker({
+      position: latlng,
+      map: map
+    });
+  </script>
+</body>
+</html>
